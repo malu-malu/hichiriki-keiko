@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>篳篥 三行の稽古譜</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700&family=BIZ+UDPGothic:wght@400;700&display=swap">
+<style>
+/* Layout: score cards on the left, a sticky fingering chart on the right (stacks above on phones) */
+:root{
+  --bg:#f3f4f6; --paper:#ffffff; --ink:#1f2a3a; --muted:#5b6575; --line:#d5d9e0;
+  --accent:#8a2f2a; --accent-soft:#f3e3e1; --hold:#b7791f; --hold-soft:#fbf0dc;
+  --hole-on:#1f2a3a; --hole-off:#ffffff;
+  --f-display:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-body:"BIZ UDPGothic","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#14171c; --paper:#1d2128; --ink:#e7e9ee; --muted:#9aa3b2; --line:#343a45;
+  --accent:#e08a80; --accent-soft:#3a2523; --hold:#e2b25c; --hold-soft:#3a2f1c;
+  --hole-on:#e7e9ee; --hole-off:#1d2128; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14171c; --paper:#1d2128; --ink:#e7e9ee; --muted:#9aa3b2; --line:#343a45;
+  --accent:#e08a80; --accent-soft:#3a2523; --hold:#e2b25c; --hold-soft:#3a2f1c;
+  --hole-on:#e7e9ee; --hole-off:#1d2128; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7}
+.wrap{max-width:1180px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-family:var(--f-display);font-size:1.9rem;margin:0;line-height:1.3;text-wrap:balance}
+h2{font-family:var(--f-display);font-size:1.25rem;margin:0;text-wrap:balance}
+.lead{color:var(--muted);max-width:62ch;margin:.4rem 0 0}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:24px;margin-top:22px;align-items:start}
+@media (max-width:860px){.grid{grid-template-columns:minmax(0,1fr)}.side{order:-1}}
+.main{display:flex;flex-direction:column;gap:20px;min-width:0}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
+.card-head{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
+.tag{font-size:.8rem;color:var(--muted);letter-spacing:.04em}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--paper);padding:6px 14px;font-weight:700}
+button.ghost{background:transparent;color:var(--accent)}
+button:focus-visible,.chip:focus-visible{outline:3px solid var(--hold);outline-offset:2px}
+.staff{overflow-x:auto;margin-top:8px}
+.staff svg{max-width:100%}
+.staff svg path,.staff svg text{fill:var(--ink)}
+.staff svg .abcjs-staff,.staff svg .abcjs-bar{stroke:var(--ink)}
+.staff svg .playing path,.staff svg .playing{fill:var(--accent)!important}
+.strip{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px;margin-top:10px}
+@media (max-width:560px){.strip{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.beat{border:1px solid var(--line);border-radius:8px;padding:6px 4px 4px;display:flex;flex-direction:column;align-items:stretch;gap:4px;min-width:0}
+.beat.big{border-color:var(--ink);border-width:2px}
+.beat-no{font-size:.7rem;color:var(--muted);text-align:center;letter-spacing:.05em}
+.chips{display:flex;gap:3px;justify-content:center;flex-wrap:wrap}
+.chip{border:1px solid transparent;background:transparent;color:var(--ink);padding:2px 4px;border-radius:6px;display:flex;flex-direction:column;align-items:center;font-weight:400;min-width:1.9em;line-height:1.2}
+.chip .fu{font-size:.78rem;color:var(--muted)}
+.chip .sy{font-family:var(--f-display);font-size:1.15rem;font-weight:700}
+.chip:hover{background:var(--accent-soft)}
+.chip.on{background:var(--accent);color:var(--paper)}
+.chip.on .fu{color:var(--paper)}
+.chip.unsure .fu{color:var(--hold);font-weight:700}
+.chip.on.unsure .fu{color:var(--paper)}
+.side{position:sticky;top:max(12px,env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:16px}
+@media (max-width:860px){.side{position:static}}
+.now{display:flex;align-items:baseline;gap:10px}
+.now .big{font-family:var(--f-display);font-size:2.4rem;font-weight:700;line-height:1}
+.now .pitch{color:var(--muted)}
+table.fing{border-collapse:collapse;width:100%;margin-top:8px}
+.fing td,.fing th{text-align:center;padding:3px;border-bottom:1px solid var(--line);font-weight:400}
+.fing th{font-size:.8rem;color:var(--muted);text-align:left;white-space:nowrap}
+.hole{display:inline-block;width:22px;height:22px;border-radius:50%;border:2px solid var(--hole-on);background:var(--hole-off);vertical-align:middle}
+.hole.c{background:var(--hole-on)}
+.hole.h{background:linear-gradient(90deg,var(--hole-on) 50%,var(--hole-off) 50%)}
+.legend{font-size:.8rem;color:var(--muted);margin-top:6px}
+.ctrl{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.ctrl label{font-size:.9rem}
+input[type=range]{accent-color:var(--accent);width:150px}
+.tabular{font-variant-numeric:tabular-nums}
+.notes{background:var(--hold-soft);border:1px solid var(--hold);border-radius:10px;padding:16px 18px}
+.notes h2{font-size:1.1rem}
+.notes ul{margin:.5rem 0 0;padding-left:1.2em}
+.notes li{margin:.25rem 0;max-width:70ch}
+.map{display:grid;grid-template-columns:repeat(9,minmax(0,1fr));gap:2px;margin-top:8px;text-align:center;font-size:.8rem}
+.map div{border:1px solid var(--line);border-radius:6px;padding:4px 0;line-height:1.3}
+.map b{font-family:var(--f-display);font-size:1.05rem;display:block}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <h1>篳篥　三行の稽古譜</h1>
+    <p class="lead">楽譜の左側、縦書き3行を五線譜に起こしたものです。縦書きは右の行から読むので、「チラロ…」→「トヲホロ…」→「タアハア…」の順に並べています。譜字や唱歌をタップすると、その音の指使いが右の表に出て、音が鳴ります。</p>
+  </header>
+
+  <div class="grid">
+    <main class="main" id="lines"></main>
+
+    <aside class="side">
+      <div class="card">
+        <div class="tag">いまの音</div>
+        <div class="now"><span class="big" id="nowFu">四</span><span class="pitch" id="nowPitch">シ ／ ミ（E5）</span></div>
+        <table class="fing" id="fing"></table>
+        <div class="legend">● 押さえる　○ 開ける　◐ 開けても押さえてもよい（運指表の灰色）</div>
+      </div>
+      <div class="card">
+        <div class="ctrl">
+          <label for="tempo">速さ</label>
+          <input type="range" id="tempo" min="40" max="120" value="66">
+          <span class="tabular" id="tempoVal">66</span><span class="tag">拍/分</span>
+        </div>
+        <div class="legend tabular" id="total"></div>
+        <div style="margin-top:10px"><button data-play="all" id="playAll">3行を通して鳴らす</button></div>
+        <div class="map" id="map"></div>
+        <div class="legend">譜字ごとの目安の音高（正律）。実際は塩梅で上下します。</div>
+      </div>
+    </aside>
+  </div>
+
+  <section class="notes" style="margin-top:22px">
+    <h2>読み取りで確かでない点</h2>
+    <ul>
+      <li><b>「ノ」</b>（黄色で表示）：この楽譜では凢（ハン）が「九」の形で別に書かれているので、ノは凢ではないと考えました。ここでは<b>前の音をそのまま続ける</b>扱いにしています。凢（ド）で吹く読み方もありえます。先生か楽譜の凡例で確認してください。</li>
+      <li><b>「ユ」</b>：丄（ジョウ）の手書きの形と読みました。</li>
+      <li><b>小さい字が上に乗った譜字</b>（六四・六丁）：上の小さい字を、本音の前に軽く入れる装飾音にしています。</li>
+      <li><b>リズム</b>：●1つを4拍（五線譜の1小節）とし、1行を●8つ・32拍にしています。●の中に唱歌が2つあるときは2拍ずつに割りました。大きい●（3つ目と7つ目）は太い枠で示しています。速さ66で3行通すと約87秒です。雅楽の実際の間合いは伸び縮みするので、これは骨組みです。</li>
+      <li><b>「返」「二」</b>：各行の終わりにある記号で、繰り返しの指示と思われますが、この五線譜には反映していません。</li>
+    </ul>
+  </section>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/abcjs@6.4.4/dist/abcjs-basic-min.js"></script>
+<script>
+// 譜字 → 音高（Wikipedia「篳篥」の正律による目安）
+const FU = {
+  "舌":{abc:"G",midi:67,name:"ゼツ",west:"ソ（G4）"},
+  "五":{abc:"A",midi:69,name:"ゴ",west:"ラ（A4）"},
+  "工":{abc:"B",midi:71,name:"コウ",west:"シ（B4）"},
+  "凢":{abc:"c",midi:72,name:"ハン",west:"ド（C5）"},
+  "六":{abc:"d",midi:74,name:"リク",west:"レ（D5）"},
+  "四":{abc:"e",midi:76,name:"シ",west:"ミ（E5）"},
+  "一":{abc:"^f",midi:78,name:"イツ",west:"ファ#（F#5）"},
+  "丄":{abc:"g",midi:79,name:"ジョウ",west:"ソ（G5）"},
+  "丁":{abc:"a",midi:81,name:"テイ",west:"ラ（A5）"}
+};
+// 運指表（資料の「篳篥按指法」）1=押さえる 0=開ける 2=どちらでも
+const FINGERS = ["左 食指","左 母指（裏）","左 中指","左 無名指","右 食指","右 母指（裏）","右 中指","右 無名指","右 小指"];
+const FING = {
+  "舌":[1,1,1,1,1,1,1,1,1],"五":[1,1,1,1,1,1,1,1,0],"工":[1,1,1,1,1,1,1,0,0],
+  "凢":[1,1,1,1,1,1,0,0,0],"六":[1,1,1,1,0,1,1,0,0],"四":[1,1,1,0,0,1,1,0,0],
+  "一":[1,1,0,0,0,1,1,0,0],"丄":[1,0,0,0,0,1,1,0,0],"丁":[0,0,1,0,0,2,2,0,0]
+};
+// n(k,sy,show,dur,grace,unsure)  dur: 拍数（●1つ=4拍）
+const n=(k,sy,show,dur,grace,unsure)=>({k,sy,show:show||k,dur,grace,unsure});
+const LINES = [
+  {title:"1行目　チラロ…",where:"楽譜の3行のうち右の行",beats:[
+    [n("六","チ","",2),n("四","ラ","",2)],
+    [n("工","ロ","",2),n("五","ル","五工",1),n("工","","",1)],
+    [n("四","ダア","",4)],
+    [n("四","ラア","六四",4,"六")],
+    [n("六","チ","",2),n("四","ラ","四ノ",2,null,true)],
+    [n("丄","テ","丄(ユ)",2),n("丁","リ","丁丄",1),n("丄","","",1)],
+    [n("四","タア","",4)],
+    [n("四","ラア","六四",4,"六")]
+  ]},
+  {title:"2行目　トヲホロ…",where:"楽譜の3行のうち真ん中の行",beats:[
+    [n("工","トヲ","",4)],
+    [n("工","ホ","ノ",2,null,true),n("五","ロ","五舌",1),n("舌","","",1)],
+    [n("工","ト","",2),n("五","ル","五工",1),n("工","","",1)],
+    [n("四","タ","",2),n("工","ロ","工五",1),n("五","","",1)],
+    [n("丄","テ","丄(ユ)",2),n("丁","リ","丁一",1),n("一","","",1)],
+    [n("工","ト","",2),n("五","ロ","五舌",1),n("舌","","",1)],
+    [n("四","タア","",4)],
+    [n("四","ラア","六四",4,"六")]
+  ]},
+  {title:"3行目　タアハア…",where:"楽譜の3行のうち左の行（「重」「頭」の印あり）",beats:[
+    [n("四","タア","",4)],
+    [n("四","ハア","ノ",4,null,true)],
+    [n("一","タア","",4)],
+    [n("丁","リイ","",4)],
+    [n("工","ト","",2),n("凢","ロ","凢(九)",2)],
+    [n("工","ト","",2),n("五","ロ","",2)],
+    [n("丁","リイ","六丁",4,"六")],
+    [n("丁","引ろ引ろ","",4)]
+  ]}
+];
+const BIG = [2,6]; // 大きい● の拍（0始まり）
+
+let tempo=66, ctx=null, timers=[], playingLine=-1;
+const $=s=>document.querySelector(s);
+
+function abcFor(line){
+  let notes=[], lyr=[];
+  line.beats.forEach((b,bi)=>{
+    b.forEach(x=>{
+      let s=x.sy?`"^${x.show}"`:"";
+      if(x.grace) s+=`{${FU[x.grace].abc}}`;
+      s+=FU[x.k].abc+(x.dur===1?"":x.dur);
+      notes.push(s); lyr.push(x.sy?x.sy:"*");
+    });
+    notes.push(bi===7?"|]":"|");
+  });
+  return `X:1\nL:1/4\nM:4/4\nK:C\n%%annotationfont "BIZ UDPGothic" 12\n%%vocalfont "Shippori Mincho" 15\n${notes.join(" ")}\nw: ${lyr.join(" ")}\n`;
+}
+
+function setNow(k,shown){
+  $("#nowFu").textContent=shown||k;
+  $("#nowPitch").textContent=`${FU[k].name} ／ ${FU[k].west}`;
+  const f=FING[k];
+  $("#fing").innerHTML=FINGERS.map((name,i)=>{
+    const c=f[i]===1?"c":(f[i]===2?"h":"");
+    const sep=i===4?' style="border-top:2px solid var(--line)"':"";
+    return `<tr${sep}><th>${name}</th><td><span class="hole ${c}" aria-label="${f[i]===1?"押さえる":f[i]===2?"どちらでも":"開ける"}"></span></td></tr>`;
+  }).join("");
+}
+
+function audio(){
+  if(!ctx){ctx=new (window.AudioContext||window.webkitAudioContext)();}
+  if(ctx.state==="suspended") ctx.resume();
+  return ctx;
+}
+function tone(midi,start,len){
+  const a=audio(), f=440*Math.pow(2,(midi-69)/12);
+  const o1=a.createOscillator(), o2=a.createOscillator(), g=a.createGain(), lp=a.createBiquadFilter();
+  const vib=a.createOscillator(), vg=a.createGain();
+  o1.type="sawtooth"; o2.type="square"; o1.frequency.value=f; o2.frequency.value=f;
+  vib.frequency.value=5; vg.gain.value=f*0.006; vib.connect(vg); vg.connect(o1.frequency); vg.connect(o2.frequency);
+  lp.type="lowpass"; lp.frequency.value=2200; lp.Q.value=2;
+  const m2=a.createGain(); m2.gain.value=0.35;
+  o1.connect(lp); o2.connect(m2); m2.connect(lp); lp.connect(g); g.connect(a.destination);
+  g.gain.setValueAtTime(0.0001,start);
+  g.gain.exponentialRampToValueAtTime(0.18,start+0.04);
+  g.gain.setValueAtTime(0.16,start+Math.max(0.05,len-0.06));
+  g.gain.exponentialRampToValueAtTime(0.0001,start+len);
+  [o1,o2,vib].forEach(o=>{o.start(start);o.stop(start+len+0.02);});
+}
+
+function stopAll(){
+  timers.forEach(clearTimeout); timers=[];
+  if(ctx){ctx.close(); ctx=null;}
+  document.querySelectorAll(".chip.on").forEach(c=>c.classList.remove("on"));
+  document.querySelectorAll(".staff .playing").forEach(c=>c.classList.remove("playing"));
+  document.querySelectorAll("[data-play]").forEach(b=>b.textContent=b.dataset.play==="all"?"3行を通して鳴らす":"この行を鳴らす");
+  playingLine=-1;
+}
+
+// key: 行番号（0〜2）または "all"。1拍 = 60/tempo 秒、●1つ = 4拍
+function playLine(key){
+  if(playingLine===key){stopAll();return;}
+  stopAll(); playingLine=key;
+  document.querySelector(`[data-play="${key}"]`).textContent="止める";
+  const lines=key==="all"?[0,1,2]:[+key];
+  const a=audio(), beat=60/tempo, t0=a.currentTime+0.15, g=Math.min(0.18,beat*0.2);
+  let t=0;
+  lines.forEach(li=>{
+    const svgNotes=[...document.querySelectorAll(`#staff${li} .abcjs-note`)];
+    LINES[li].beats.flat().forEach((x,i)=>{
+      const st=t0+t*beat, len=x.dur*beat;
+      if(x.grace){ tone(FU[x.grace].midi,st,g); tone(FU[x.k].midi,st+g,len-g); }
+      else tone(FU[x.k].midi,st,len);
+      timers.push(setTimeout(()=>{
+        document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",+c.dataset.l===li&&+c.dataset.i===i));
+        document.querySelectorAll(".staff .playing").forEach(s=>s.classList.remove("playing"));
+        if(svgNotes[i]) svgNotes[i].classList.add("playing");
+        setNow(x.k,x.show);
+        if(key==="all"&&i===0) document.getElementById("line"+li).scrollIntoView({behavior:"smooth",block:"nearest"});
+      },(st-a.currentTime)*1000));
+      t+=x.dur;
+    });
+  });
+  timers.push(setTimeout(stopAll,(t0+t*beat-a.currentTime)*1000+200));
+}
+function updateTempo(){
+  $("#tempoVal").textContent=tempo;
+  const s=Math.round(96*60/tempo);
+  $("#total").textContent=`●1つ＝${(4*60/tempo).toFixed(1)}秒　全3行で約${s}秒`;
+}
+
+function build(){
+  const main=$("#lines");
+  LINES.forEach((line,li)=>{
+    const card=document.createElement("section");
+    card.className="card"; card.id="line"+li;
+    let idx=0;
+    const strip=line.beats.map((b,bi)=>{
+      const chips=b.map(x=>{
+        const i=idx++;
+        return `<button class="chip${x.unsure?" unsure":""}" data-l="${li}" data-i="${i}" aria-label="${x.sy||"続き"} ${x.show}"><span class="fu">${x.show}</span><span class="sy">${x.sy||"・"}</span></button>`;
+      }).join("");
+      return `<div class="beat${BIG.includes(bi)?" big":""}"><div class="beat-no">${BIG.includes(bi)?"大●":"●"}${bi+1}</div><div class="chips">${chips}</div></div>`;
+    }).join("");
+    card.innerHTML=`<div class="card-head"><div><h2>${line.title}</h2><div class="tag">${line.where}</div></div>
+      <button data-play="${li}">この行を鳴らす</button></div>
+      <div class="staff" id="staff${li}"></div><div class="strip">${strip}</div>`;
+    main.appendChild(card);
+    if(window.ABCJS){ ABCJS.renderAbc("staff"+li, abcFor(line), {responsive:"resize",add_classes:true,paddingleft:0,paddingright:0,staffwidth:760,wrap:{minSpacing:1.6,maxSpacing:2.8,preferredMeasuresPerLine:4}}); }
+    else { document.getElementById("staff"+li).innerHTML='<p class="tag">五線譜の表示に必要なライブラリを読み込めませんでした。下の拍ごとの表は使えます。</p>'; }
+  });
+  main.addEventListener("click",e=>{
+    const p=e.target.closest("[data-play]"); if(p){playLine(+p.dataset.play);return;}
+    const c=e.target.closest(".chip"); if(!c) return;
+    const li=+c.dataset.l, i=+c.dataset.i, x=LINES[li].beats.flat()[i];
+    if(playingLine<0){
+      document.querySelectorAll(".chip.on").forEach(z=>z.classList.remove("on"));
+      c.classList.add("on");
+      const a=audio(), st=a.currentTime+0.02;
+      if(x.grace){tone(FU[x.grace].midi,st,0.09);tone(FU[x.k].midi,st+0.09,0.8);} else tone(FU[x.k].midi,st,0.9);
+    }
+    setNow(x.k,x.show);
+  });
+  $("#map").innerHTML=Object.keys(FU).map(k=>`<div><b>${k}</b>${FU[k].west.replace(/（.*）/,"")}</div>`).join("");
+  $("#tempo").addEventListener("input",e=>{tempo=+e.target.value;updateTempo();});
+  updateTempo();
+  $("#playAll").addEventListener("click",()=>playLine("all"));
+  setNow("四");
+}
+build();
+</script>
+</body>
+</html>
