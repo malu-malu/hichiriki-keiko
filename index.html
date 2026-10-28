@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>:root{color-scheme:light}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+<meta name="theme-color" content="#0b0c0f">
+<style>body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>篳篥 三行の稽古譜</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,20 +12,20 @@
 <style>
 /* Layout: score cards on the left, a sticky fingering chart on the right (stacks above on phones) */
 :root{
-  --bg:#f3f4f6; --paper:#ffffff; --ink:#1f2a3a; --muted:#5b6575; --line:#d5d9e0;
-  --accent:#8a2f2a; --accent-soft:#f3e3e1; --hold:#b7791f; --hold-soft:#fbf0dc;
-  --hole-on:#1f2a3a; --hole-off:#ffffff; --left:#1f5fa8; --left-soft:#e3edf8; --right:#c25a12; --right-soft:#fbeadd;
+  /* 色の値は「夜」（いちばん見やすい配色）。色ボタンで JavaScript が上書きする */
+  --bg:#0b0c0f; --panel:#16181d; --panel2:#1f2229; --line:#3a3f4a; --tx:#f5f5f2; --dim:#b9bdc6;
+  --go:#ffd23f; --kai:#5fd4ff; --you:#9df28a; --new:#ff9f6b; --rev:#8fb8ff;
+  --onbg:#3a3210; --sentbg:#10210e; --inbg:#000000; --ongo:#111111; --glow:#ffd23f55;
+  /* このページでの役割 */
+  --paper:var(--panel); --ink:var(--tx); --muted:var(--dim);
+  --accent:var(--go); --on-accent:var(--ongo); --accent-soft:var(--panel2);
+  --hold:var(--kai); --hold-soft:var(--panel2);
+  --hole-on:var(--tx); --hole-off:var(--panel);
+  --left:var(--rev); --left-soft:var(--panel2); --right:var(--new); --right-soft:var(--panel2);
   --f-display:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
   --f-body:"BIZ UDPGothic","Hiragino Sans","Yu Gothic",system-ui,sans-serif;
+  color-scheme:dark;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#14171c; --paper:#1d2128; --ink:#e7e9ee; --muted:#9aa3b2; --line:#343a45;
-  --accent:#e08a80; --accent-soft:#3a2523; --hold:#e2b25c; --hold-soft:#3a2f1c;
-  --hole-on:#e7e9ee; --hole-off:#1d2128; --left:#7fb3ee; --left-soft:#1c2a3b; --right:#f0a46b; --right-soft:#3a2a1d; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#14171c; --paper:#1d2128; --ink:#e7e9ee; --muted:#9aa3b2; --line:#343a45;
-  --accent:#e08a80; --accent-soft:#3a2523; --hold:#e2b25c; --hold-soft:#3a2f1c;
-  --hole-on:#e7e9ee; --hole-off:#1d2128; --left:#7fb3ee; --left-soft:#1c2a3b; --right:#f0a46b; --right-soft:#3a2a1d; color-scheme:dark}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7}
 .wrap{max-width:1180px;margin:0 auto;padding-block:28px 56px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 h1{font-family:var(--f-display);font-size:1.9rem;margin:0;line-height:1.3;text-wrap:balance}
@@ -36,9 +37,9 @@ h2{font-family:var(--f-display);font-size:1.25rem;margin:0;text-wrap:balance}
 .card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:18px;min-width:0}
 .card-head{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
 .tag{font-size:.8rem;color:var(--muted);letter-spacing:.04em}
-button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--paper);padding:6px 14px;font-weight:700}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);padding:6px 14px;font-weight:700}
 button.ghost{background:transparent;color:var(--accent)}
-button:focus-visible,.chip:focus-visible{outline:3px solid var(--hold);outline-offset:2px}
+button:focus-visible,.chip:focus-visible{outline:3px solid var(--accent);outline-offset:2px;box-shadow:0 0 0 6px var(--glow)}
 .staff{overflow-x:auto;margin-top:8px}
 .staff svg{max-width:100%}
 .staff svg path,.staff svg text{fill:var(--ink)}
@@ -54,10 +55,11 @@ button:focus-visible,.chip:focus-visible{outline:3px solid var(--hold);outline-o
 .chip .fu{font-size:.78rem;color:var(--muted)}
 .chip .sy{font-family:var(--f-display);font-size:1.15rem;font-weight:700}
 .chip:hover{background:var(--accent-soft)}
-.chip.on{background:var(--accent);color:var(--paper)}
-.chip.on .fu{color:var(--paper)}
+.chip.on{background:var(--accent);color:var(--on-accent)}
+.chip.on .fu{color:var(--on-accent)}
 .chip.unsure .fu{color:var(--hold);font-weight:700}
-.chip.on.unsure .fu{color:var(--paper)}
+.chip.unsure .fu::after{content:"？"}
+.chip.on.unsure .fu{color:var(--on-accent)}
 .side{position:sticky;top:max(12px,env(safe-area-inset-top,0px));display:flex;flex-direction:column;gap:16px}
 @media (max-width:860px){.side{position:static}}
 .now{display:flex;align-items:baseline;gap:10px}
@@ -102,8 +104,11 @@ table.fing{border-collapse:collapse;width:auto}
 .ctrl{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 .ctrl label{font-size:.9rem}
 input[type=range]{accent-color:var(--accent);width:150px}
+.ctrl.colors{gap:6px;flex-wrap:nowrap}
+.colorbtn{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);color:var(--tx);border:1px solid var(--line);padding:5px 10px;white-space:nowrap;font-size:.9rem}
+.colorbtn .sw{width:16px;height:16px;border-radius:50%;background:var(--go);box-shadow:0 0 0 2px var(--tx);flex:0 0 auto}
 .tabular{font-variant-numeric:tabular-nums}
-.notes{background:var(--hold-soft);border:1px solid var(--hold);border-radius:10px;padding:16px 18px}
+.notes{background:var(--hold-soft);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
 .notes h2{font-size:1.1rem}
 .notes ul{margin:.5rem 0 0;padding-left:1.2em}
 .notes li{margin:.25rem 0;max-width:70ch}
@@ -137,6 +142,11 @@ input[type=range]{accent-color:var(--accent);width:150px}
           <label for="tempo">速さ</label>
           <input type="range" id="tempo" min="40" max="120" value="66">
           <span class="tabular" id="tempoVal">66</span><span class="tag">拍/分</span>
+        </div>
+        <div class="tag" style="margin-top:10px">色</div>
+        <div class="ctrl colors">
+          <button type="button" class="colorbtn" id="seriesBtn" aria-label="色のシリーズの切りかえ(見やすい/パステル)"><span id="seriesName">見やすい</span></button>
+          <button type="button" class="colorbtn" id="colorBtn" aria-label="色の切りかえ(押すたびに変わります)"><span class="sw" aria-hidden="true"></span><span id="colorName">夜</span></button>
         </div>
         <div class="legend tabular" id="total"></div>
         <div style="margin-top:10px"><button data-play="all" id="playAll">3行を通して鳴らす</button></div>
@@ -219,6 +229,47 @@ const LINES = [
   ]}
 ];
 const BIG = [2,6]; // 大きい● の拍（0始まり）
+
+// 色（5色。すべて WCAG 2.1 AA 4.5:1 以上を確認済み）
+var PAL={
+ night: {bg:"#0b0c0f",panel:"#16181d",panel2:"#1f2229",line:"#3a3f4a",tx:"#f5f5f2",dim:"#b9bdc6",go:"#ffd23f",kai:"#5fd4ff",you:"#9df28a",new:"#ff9f6b",rev:"#8fb8ff",onbg:"#3a3210",sentbg:"#10210e",inbg:"#000000",ongo:"#111111"},
+ neon:  {bg:"#0d0221",panel:"#1a0b3b",panel2:"#241452",line:"#5a469c",tx:"#fdf7ff",dim:"#cfc5ee",go:"#ff5ad9",kai:"#3ee8ff",you:"#b8ff3e",new:"#ffb86b",rev:"#b3afff",onbg:"#4a0f45",sentbg:"#1d2a05",inbg:"#05010f",ongo:"#1a0014"},
+ ocean: {bg:"#06192e",panel:"#0c2742",panel2:"#123352",line:"#3a6688",tx:"#f2f8ff",dim:"#bfd3e8",go:"#4fe3ff",kai:"#ffd36b",you:"#8ff0c4",new:"#ffb08a",rev:"#b6ccff",onbg:"#0f3f57",sentbg:"#0b3324",inbg:"#020c18",ongo:"#04202b"},
+ sakura:{bg:"#fff6ef",panel:"#ffffff",panel2:"#fdebf0",line:"#c99aab",tx:"#2b1a1f",dim:"#5e434c",go:"#b0124f",kai:"#075a85",you:"#22662a",new:"#9a4211",rev:"#33449c",onbg:"#fbd3e1",sentbg:"#e8f5e9",inbg:"#ffffff",ongo:"#ffffff"},
+ mori:  {bg:"#0e1f16",panel:"#16301f",panel2:"#1d3b28",line:"#4a7357",tx:"#f6f3e4",dim:"#c9d3bb",go:"#c6f36b",kai:"#7fd8ff",you:"#ffe082",new:"#ffab73",rev:"#b8c9ff",onbg:"#2f4a14",sentbg:"#233a12",inbg:"#08140d",ongo:"#10200a"},
+ ichigo:   {bg:"#fff0f4",panel:"#ffffff",panel2:"#ffe3ec",line:"#f2b8c8",tx:"#3a1f29",dim:"#6e4a57",go:"#c2185b",kai:"#1565a8",you:"#2e7d32",new:"#b0450f",rev:"#5b3fb0",onbg:"#ffe2ec",sentbg:"#eaf7ea",inbg:"#ffffff",ongo:"#ffffff"},
+ lavender: {bg:"#f6f1ff",panel:"#ffffff",panel2:"#ece3ff",line:"#c9b5f2",tx:"#2a2140",dim:"#5b4f75",go:"#6a3fc4",kai:"#0f6c8f",you:"#2f7a3a",new:"#a8481a",rev:"#b0246a",onbg:"#e2d4ff",sentbg:"#e9f6ec",inbg:"#ffffff",ongo:"#ffffff"},
+ mint:     {bg:"#effbf6",panel:"#ffffff",panel2:"#dcf5ea",line:"#9fd8bf",tx:"#16302a",dim:"#3f5f55",go:"#0b7a5a",kai:"#1d5fa8",you:"#a0306a",new:"#a14a10",rev:"#3a4fb0",onbg:"#d9f6e9",sentbg:"#fdeef5",inbg:"#ffffff",ongo:"#ffffff"},
+ lemon:    {bg:"#fffbe8",panel:"#ffffff",panel2:"#fff3c4",line:"#e8d27a",tx:"#2f2a12",dim:"#5f5730",go:"#8a5d00",kai:"#1b62a3",you:"#2e7d32",new:"#b0401a",rev:"#6a3fc4",onbg:"#ffe9a0",sentbg:"#eaf7ea",inbg:"#ffffff",ongo:"#ffffff"},
+ sora:     {bg:"#eef7ff",panel:"#ffffff",panel2:"#dcefff",line:"#a9cdef",tx:"#13283d",dim:"#44607a",go:"#1565c0",kai:"#b03a74",you:"#2e7d32",new:"#a8481a",rev:"#5b3fb0",onbg:"#dcedff",sentbg:"#eaf7ea",inbg:"#ffffff",ongo:"#ffffff"},
+ peach:    {bg:"#fff3ec",panel:"#ffffff",panel2:"#ffe4d6",line:"#f3bfa3",tx:"#3a2318",dim:"#6e4c3e",go:"#b8401a",kai:"#1565a8",you:"#2e7d32",new:"#8a3fa0",rev:"#3f51b5",onbg:"#ffe6da",sentbg:"#eaf7ea",inbg:"#ffffff",ongo:"#ffffff"}
+};
+var SERIES={mieru:["night","neon","ocean","sakura","mori"],pastel:["ichigo","lavender","mint","lemon","sora","peach"]};
+var SERIES_NAME={mieru:"見やすい",pastel:"パステル"};
+var PAL_NAME={night:"夜",neon:"ネオン",ocean:"海",sakura:"桜",mori:"森",ichigo:"いちごミルク",lavender:"ラベンダー",mint:"ミント",lemon:"レモン",sora:"そらいろ",peach:"ピーチ"};
+var DARK={night:1,neon:1,ocean:1,mori:1};
+function seriesOf(t){return SERIES.pastel.indexOf(t)>=0?"pastel":"mieru";}
+// 設定（この端末に保存）
+var S={theme:"night",lastTh:{}};
+var STORE_KEY="hichiriki-keiko.settings";
+function load(){try{var v=JSON.parse(localStorage.getItem(STORE_KEY)||"{}");if(v&&PAL[v.theme])S.theme=v.theme;if(v&&v.lastTh&&typeof v.lastTh==="object"){["mieru","pastel"].forEach(function(k){if(PAL[v.lastTh[k]]&&seriesOf(v.lastTh[k])===k)S.lastTh[k]=v.lastTh[k];});}}catch(e){}}
+function store(){try{localStorage.setItem(STORE_KEY,JSON.stringify(S));}catch(e){}}
+function pal(){return PAL[S.theme]||PAL.night;}
+function applyTheme(){var p=pal(),st=document.documentElement.style;
+ Object.keys(p).forEach(function(k){st.setProperty("--"+k,p[k]);});
+ st.setProperty("--glow",p.go+"55");
+ st.colorScheme=DARK[S.theme]?"dark":"light";
+ var m=document.querySelector('meta[name="theme-color"]');
+ if(!m){m=document.createElement("meta");m.name="theme-color";document.head.appendChild(m);}m.content=p.bg;
+ var n=document.getElementById("colorName"); if(n) n.textContent=PAL_NAME[S.theme]||"夜";
+ var sn=document.getElementById("seriesName"); if(sn) sn.textContent=SERIES_NAME[seriesOf(S.theme)];}
+// 色ボタン（操作名は color。ほかと重ならないこと）
+// （操作名は color と series。ページ内のほかの名前と重ならないことを確認済み）
+function color(){var L=SERIES[seriesOf(S.theme)],i=L.indexOf(S.theme);
+  S.theme=L[(i+1)%L.length];S.lastTh[seriesOf(S.theme)]=S.theme;store();applyTheme();}
+function series(){var nx=seriesOf(S.theme)==="mieru"?"pastel":"mieru";
+  S.lastTh[seriesOf(S.theme)]=S.theme;S.theme=S.lastTh[nx]||SERIES[nx][0];store();applyTheme();}
+load(); applyTheme();
 
 let tempo=66, ctx=null, timers=[], playingLine=-1;
 const $=s=>document.querySelector(s);
@@ -368,6 +419,8 @@ function build(){
   $("#tempo").addEventListener("input",e=>{tempo=+e.target.value;updateTempo();});
   updateTempo();
   $("#playAll").addEventListener("click",()=>playLine("all"));
+  $("#colorBtn").addEventListener("click",color);
+  $("#seriesBtn").addEventListener("click",series);
   setNow("四");
 }
 build();
